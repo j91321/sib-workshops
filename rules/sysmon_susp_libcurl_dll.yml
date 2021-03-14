@@ -1,0 +1,32 @@
+title: GUP.exe DLL Sideloading
+id: afa77210-4543-4443-9b3b-54da47be886d
+status: experimental
+description: The GUP.exe can be abused to load malicious libcurl.dll which will most likely be unsigned
+references:
+    - https://www.fireeye.com/blog/threat-research/2018/09/apt10-targeting-japanese-corporations-using-updated-ttps.html
+    - https://flangvik.com/privesc/windows/bypass/2019/06/25/Sideload-like-your-an-APT.html
+author: Ján Trenčanský
+date: 2021/03/14
+modified: 2021/03/14
+tags:
+    - attack.persistence
+    - attack.defense_evasion
+    - attack.t1073          # an old one
+    - attack.t1038          # an old one
+    - attack.t1574.001
+    - attack.t1574.002
+logsource:
+    category: image_load
+    product: windows
+detection:
+    selection:
+        Image|endswith:
+        - GUP.exe
+        ImageLoaded|endswith:
+        - libcurl.dll
+        Signed:
+        - false
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high
