@@ -24,7 +24,7 @@ If you wish to follow the examples during the workshop you'll need following:
 
 ## License
 
-Everything in logs folder - GPL-3.0 License
+Everything in logs and config folder - GPL-3.0 License
 
 Everything in rules folder - Detection Rule License (DRL) 1.0
 
