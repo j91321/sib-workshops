@@ -1,0 +1,9 @@
+[elastic]
+192.168.40.132
+192.168.40.133
+
+[kibana]
+192.168.40.134
+
+[all:vars]
+ansible_user = ansible
