@@ -1,0 +1,10 @@
+---
+- name: Install Kibana
+  become: true
+  hosts:
+    - kibana
+  vars:
+    kibana_elasticsearch_hosts: ["http://192.168.40.132:9200", "http://192.168.40.133:9200"]
+  roles:
+    - kibana
+  

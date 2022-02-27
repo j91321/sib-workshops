@@ -1,0 +1,36 @@
+---
+- name: Install Security Monitoring
+  hosts:
+    - endpoint
+  vars:
+    sysmon_config: olafhartong-sysmonconfig.xml
+    sysmon_version: "13.33"
+    winlogbeat_event_logs:
+      channels:
+        - name: Application
+          ignore_older: "72h"
+        - name: System
+          ignore_older: "72h"
+      security: true
+      sysmon: true
+      powershell: false
+      wef: false
+    winlogbeat_output:
+      type: "elasticsearch"
+      elasticsearch:
+        hosts:
+          - "192.168.40.132:9200"
+        security:
+          enabled: false
+    winlogbeat_processors: |
+      - add_host_metadata:
+          when.not.contains.tags: forwarded
+      - add_cloud_metadata: ~
+    winlogbeat_service:
+      install_path_64: "C:\\Program Files\\Elastic\\winlogbeat"
+      install_path_32: "C:\\Program Files (x86)\\Elastic\\winlogbeat"
+      version: "7.17.0"
+      download: true
+  roles:
+    - j91321.sysmon
+    - j91321.winlogbeat

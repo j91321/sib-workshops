@@ -1,0 +1,3 @@
+elastic_node_name: data-node
+elastic_node_roles:
+ - data

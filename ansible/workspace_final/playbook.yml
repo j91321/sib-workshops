@@ -1,0 +1,68 @@
+---
+- name: Install Elasticsearch
+  hosts: elastic
+  become: true
+  vars:
+    elastic_cluster_name: "our-elasticsearch-cluster"
+    elastic_version: 7.17.0
+    master_nodes:
+      - 192.168.40.132
+    elastic_bind:
+      - _local_
+      - _ens33_
+    elastic_log_path: /var/log/elasticsearch
+    elastic_data_path: /var/lib/elasticsearch
+  handlers:
+    - name: restart elasticsearch
+      systemd:
+        name: elasticsearch
+        state: restarted
+  tasks:
+    - name: UFW allow elasticsearch 9200
+      ufw:
+        rule: allow
+        port: 9200
+        proto: tcp
+        src: "{{ item }}"
+      with_items: "{{ groups['elastic'] + groups['kibana']}}"
+      tags:
+        - firewall
+    - name: UFW allow elasticsearch port 9300
+      ufw:
+        rule: allow
+        port: 9300
+        proto: tcp
+        src: "{{ item }}"
+      with_items: "{{ groups['elastic'] }}"
+      tags:
+        - firewall
+    - name: Install GPG
+      apt:
+        name: gpg-agent
+        update_cache: true
+        state: present
+    - name: Add Elasticsearch 7.X repo key
+      apt_key:
+        id: 46095ACC8548582C1A2699A9D27D666CD88E42B4
+        url: "https://artifacts.elastic.co/GPG-KEY-elasticsearch"
+        state: present
+    - name: Add Elasticsearch 7.X repo
+      apt_repository:
+        repo: deb https://artifacts.elastic.co/packages/7.x/apt stable main
+        filename: elastic-7-repo.list
+        state: present
+    - name: Install Elasticsearch
+      apt:
+        name: elasticsearch={{ elastic_version }}
+        update_cache: true
+        state: present
+    - name: Configure Elasticsearch
+      template:
+        src: "elasticsearch.yml.j2"
+        dest: "/etc/elasticsearch/elasticsearch.yml"
+      notify: restart elasticsearch
+    - name: Enable Elasticsearch
+      systemd:
+        name: elasticsearch
+        enabled: true
+    

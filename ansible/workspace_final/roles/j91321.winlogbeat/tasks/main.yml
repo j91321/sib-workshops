@@ -1,0 +1,6 @@
+---
+- import_tasks: "32bit.yml"
+  when: ansible_architecture == "32-bit"
+
+- import_tasks: "64bit.yml"
+  when: ansible_architecture == "64-bit"

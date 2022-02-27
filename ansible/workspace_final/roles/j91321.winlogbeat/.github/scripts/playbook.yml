@@ -1,0 +1,11 @@
+- name: Test playbook
+  hosts:
+    - localhost
+  vars:
+    winlogbeat_service:
+      install_path_64: "C:\\Program Files\\monitoring\\winlogbeat"
+      install_path_32: "C:\\Program Files (x86)\\monitoring\\winlogbeat"
+      version: "7.16.2"
+      download: true
+  roles:
+    - ansible-role-winlogbeat

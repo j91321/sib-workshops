@@ -1,0 +1,31 @@
+---
+- name: Add Elasticsearch 7.X repo key
+  apt_key:
+    id: 46095ACC8548582C1A2699A9D27D666CD88E42B4
+    url: "https://artifacts.elastic.co/GPG-KEY-elasticsearch"
+    state: present
+
+- name: Add Elasticsearch 7.X repo
+  apt_repository:
+    repo: deb https://artifacts.elastic.co/packages/7.x/apt stable main
+    filename: elastic-7-repo.list
+    state: present
+
+- name: Install Kibana
+  apt:
+    name: kibana={{ kibana_version }}
+    update_cache: true
+    state: present
+
+- name: Configure Kibana
+  template:
+    src: "kibana.yml.j2"
+    dest: "/etc/kibana/kibana.yml"
+  notify: restart kibana
+
+- name: Enable Kibana service
+  systemd:
+    name: kibana
+    enabled: true
+    state: started
+    
