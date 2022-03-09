@@ -1,5 +1,14 @@
 # Introduction
 
+## References
+
+- [Ansible For DevOps](https://www.ansiblefordevops.com/)
+- [Ansible Docs](https://docs.ansible.com/)
+
+## Environment
+
+![Environment Diagram](environment.png "Environment for this workshop")
+
 ## Create python virtual environment
 
 ```sh
@@ -388,7 +397,7 @@ verifier:
 
 *Ideally run privileged containers only in VMs*
 
-### Add pre_task setp to converge.yml playbook
+### Add pre_task setup to converge.yml playbook
 
 Add following to `molecule/default/converge,yml`, before the `tasks` step.
 
@@ -400,6 +409,24 @@ Add following to `molecule/default/converge,yml`, before the `tasks` step.
         update_cache: true
         state: present
       when: ansible_os_family == 'Debian'
+```
+
+### Verify installation test
+
+```yml
+---
+- name: Verify
+  hosts: all
+  gather_facts: false
+  tasks:
+  - name: Kibana is running
+    uri:
+      url: http://127.0.0.1:5601
+      status_code: 503
+    register: result
+    until: result.status == 503
+    retries: 60
+    delay: 1
 ```
 
 ### Use remote Docker on WSL (Optional when using WSL)
