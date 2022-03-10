@@ -488,7 +488,7 @@ winrm get winrm/config/Service
 ## Delete HTTP Listener (optional)
 
 ```powershell
-Get-ChildItem -Path WSMan:\localhost\Listener | Where-Object { $_.Keys -contains "Transport=HTTP" | Remove-Item -Recurse -Force}
+Get-ChildItem -Path WSMan:\localhost\Listener | Where-Object { $_.Keys -contains "Transport=HTTP" } | Remove-Item -Recurse -Force
 ```
 
 ## Configure Ansible
