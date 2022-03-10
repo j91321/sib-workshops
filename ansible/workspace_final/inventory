@@ -1,0 +1,18 @@
+[elastic]
+192.168.40.132
+192.168.40.133
+
+[kibana]
+192.168.40.134
+
+[endpoint]
+192.168.40.136
+
+[endpoint:vars]
+ansible_user = IEUser
+ansible_connection = winrm
+ansible_shell_type = powershell
+ansible_winrm_server_cert_validation = ignore
+
+[all:vars]
+ansible_user = ansible

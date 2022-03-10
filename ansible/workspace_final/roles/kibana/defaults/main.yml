@@ -1,0 +1,5 @@
+---
+kibana_version: 7.17.0
+kibana_bind: "0.0.0.0"
+kibana_port: 5601
+kibana_elasticsearch_hosts: ["http://localhost:9200"]

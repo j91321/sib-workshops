@@ -1,0 +1,10 @@
+cluster.name: {{ elastic_cluster_name }}
+cluster.initial_master_nodes: {{ master_nodes }}
+discovery.seed_hosts: {{ master_nodes }}
+node.name: {{ elastic_node_name }}
+node.roles: {{ elastic_node_roles }}
+network.host: {{ elastic_bind }}
+path.data: {{ elastic_data_path }}
+path.logs: {{ elastic_log_path }}
+
+

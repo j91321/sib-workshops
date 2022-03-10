@@ -1,0 +1,3 @@
+elastic_node_name: master-node
+elastic_node_roles:
+ - master
